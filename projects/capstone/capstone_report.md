@@ -30,7 +30,25 @@ The dataset contains of 20 input variables and out output variable. Variables' d
 
 ### Data Exploration
 
+Dataset contains 21 variables, of which 1 is output variable and 41188 observations.
 
+![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/1 dataset shape.png)
+Fig. 1: Dataset shape
+
+Out of 20 input variables in the dataset half is numerical and another one is categorical, stored as objects (strings).
+
+![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/2 dataset types.png)
+Fig. 2: Data types in dataset
+
+![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/3 dataset head.png)
+Fig. 3: Datset sample
+
+Out of numerical variables, only cons.conf.idx and cons.price.idx look like they would not be skewed. There are also big scale differences between them. Eg. 'emp.var.rate' varies from -3.4 to 1.4 and duration from 0 to 4918.
+
+Most of the categorical variables habe 2 to 4 options, apart of job and education as well as date related variables. Some of categorical variables seem to have not categorized data, eg. 'poutcome' features has 'nonexistent' as the most often input.
+
+![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/4 dataset describe.png)
+Fig. 4: Dataset variables description
 
 ### Exploratory Visualization
 In this section, you will need to provide some form of visualization that summarizes or extracts a relevant characteristic or feature about the data. The visualization should adequately support the data being used. Discuss why this visualization was chosen and how it is relevant. Questions to ask yourself when writing this section:
