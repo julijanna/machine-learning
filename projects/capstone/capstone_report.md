@@ -89,10 +89,21 @@ Most of the categorical variables habe 2 to 4 options, apart of job and educatio
 Fig. 4: Dataset variables description
 
 ### Exploratory Visualization
-In this section, you will need to provide some form of visualization that summarizes or extracts a relevant characteristic or feature about the data. The visualization should adequately support the data being used. Discuss why this visualization was chosen and how it is relevant. Questions to ask yourself when writing this section:
-- _Have you visualized a relevant characteristic or feature about the dataset or input data?_
-- _Is the visualization thoroughly analyzed and discussed?_
-- _If a plot is provided, are the axes, title, and datum clearly defined?_
+Dataset contains numerical and categorical variables. Out of numerical variables, none has normal distributions. Most distributions are positively skewed (age, duration, nr.employed), but some of theme have discrete-like distribution (cons.price.idx, cons.conf.idx)
+
+![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/5 numerical variables.png)
+Fig. 5: Distributions of numerical variables
+
+In categorical variables, there are some which are balanced as contact or housing, with housing having very little "unknown" share. There are a few impalanced classes (loan, default) also with very small "unknown" share. Poutcome is imbalanced having "unknown" as the most frequent feature. Marital, Job and Education are only classes with more than 2 labels (when not counting "unknown" as label).
+
+![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/6 categorical variables.png)
+Fig. 6: Distributions of categorical variables
+
+Output variable is an imbalanced two label class with only 11% share of "no" and 89% "yes".
+
+![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/7 output variable distribution.png)
+Fig. 7: Distribution of output variable
+
 
 ### Algorithms and Techniques
 In this section, you will need to discuss the algorithms and techniques you intend to use for solving the problem. You should justify the use of each one based on the characteristics of the problem and the problem domain. Questions to ask yourself when writing this section:
