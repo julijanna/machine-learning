@@ -144,16 +144,39 @@ In order to create a benchmark I assumed, that every contacted client would buy 
 ## III. Methodology
 
 ### Data Preprocessing
+
+#### Missing data
+
+There is no missing data in this dataset:
+
+![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/10 missing data.png)
+Fig. 10: Missing data
+
+But many features have "unknown" which can be considered as missing data. Because I will scale all features I want unknown to be a constant between "yes" and "no". I will change all "unknown" or "nonexistent" to 0 and accordingly, "yes" or "success" to 1 and "no" or "failure" to -1.
+
+![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/11 Replacing unknown and nonexistent.png)
+Fig. 11: Replacing "unknonwn" and "nonexistent" with 0
+
+Additionally, I will insert dummies for categorical variables.
+
+![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/12 inserting dummies.png)
+Fig. 12: Inserting dummies
+
+#### Skewed distributions
 As many distributions are skewed, I will transform then using log transformation, log(1+x).
 
-![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/10 transformed age.png)
-Fig. 10: Transformed age feature
+![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/13 transformed age.png)
+Fig. 13: Transformed age feature
 
-![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/11 transformed duration.png)
-Fig. 11: Transformed duration feature
+![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/14 transformed duration.png)
+Fig. 14: Transformed duration feature
 
-![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/12 transformed campaign.png)
-Fig. 12: Transformed campaign feature
+![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/15 transformed campaign.png)
+Fig. 15: Transformed campaign feature
+
+#### Scaling
+
+Finally, I save output variable y in Y and do the min max scaler for all dependent variables.
 
 ### Implementation
 In this section, the process for which metrics, algorithms, and techniques that you implemented for the given data will need to be clearly documented. It should be abundantly clear how the implementation was carried out, and discussion should be made regarding any complications that occurred during this process. Questions to ask yourself when writing this section:
