@@ -198,6 +198,16 @@ Random under-sampling was done 10 times every time with another split. This give
 
 For every of 10 different under-samplings, there are 10 random training and test splits done. On every of these 100 different splits, each of 5 models is trained and measured. Model evaluation will be done for average and distribution of all 100 performances.
 
+#### Choosing best model
+
+Out of all models, SVMs have performed the best in terms of fbeta score, accuracy and recall. Precision was no the best of all models, but as written above, precision is not the main measure in this project.
+
+![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/18 FBeta score box plot all.png)
+Fig. 18: FBeta score of all algorithms incl. benchmark
+
+![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/19 FBeta score mean all.png)
+Fig. 19: FBeta score mean of all algorithms incl. benchmark
+
 ### Refinement
 
 In this section, you will need to discuss the process of improvement you made upon the algorithms and techniques you used in your implementation. For example, adjusting parameters for certain models to acquire improved solutions would fall under the refinement category. Your initial and final solutions should be reported, as well as any significant intermediate results as necessary. Questions to ask yourself when writing this section:
