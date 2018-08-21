@@ -174,17 +174,32 @@ Fig. 14: Transformed duration feature
 ![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/15 transformed campaign.png)
 Fig. 15: Transformed campaign feature
 
-#### Scaling
-
-Finally, I save output variable y in Y and do the min max scaler for all dependent variables.
-
 ### Implementation
-In this section, the process for which metrics, algorithms, and techniques that you implemented for the given data will need to be clearly documented. It should be abundantly clear how the implementation was carried out, and discussion should be made regarding any complications that occurred during this process. Questions to ask yourself when writing this section:
-- _Is it made clear how the algorithms and techniques were implemented with the given datasets or input data?_
-- _Were there any complications with the original metrics or techniques that required changing prior to acquiring a solution?_
-- _Was there any part of the coding process (e.g., writing complicated functions) that should be documented?_
+
+Before data was divided into training and test set, it had to be randomly under sampled in order to achieve higher performance.
+
+#### Data preprocessing
+
+All data was preprocessed, as described earlier before starting any model evaluation or fitting. Then, before splitting data info test and training data, it had to be under-sampled in order to minimize classes imbalance.
+
+#### Random Under-Sampling
+
+Because this dataset is very imbalanced ("yes" output class is only 11% of whole dataset) and also pretty large (41k observations), I will perform under-sampling in order to train and test on more balanced dataset. That means, that I will randomly choose 30% of data with "no" output and combine in with all data with "yes" output before split dataset into training and testing. It causes dataset to be smaller, only with 15k observations, but it also more balanced, with 30% share of "yes" class.
+
+![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/16 dataset shape after under sampling.png)
+Fig. 16: Dataset shape after under-sampling
+
+![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/17 classes share after under sampling.png)
+Fig. 17: Classes share after under-sampling
+
+Random under-sampling was done 10 times every time with another split. This gives the possibility to test the model robustness on different data splits and decide which model performs the best.
+
+#### Model fitting
+
+For every of 10 different under-samplings, there are 10 random training and test splits done. On every of these 100 different splits, each of 5 models is trained and measured. Model evaluation will be done for average and distribution of all 100 performances.
 
 ### Refinement
+
 In this section, you will need to discuss the process of improvement you made upon the algorithms and techniques you used in your implementation. For example, adjusting parameters for certain models to acquire improved solutions would fall under the refinement category. Your initial and final solutions should be reported, as well as any significant intermediate results as necessary. Questions to ask yourself when writing this section:
 - _Has an initial solution been found and clearly reported?_
 - _Is the process of improvement clearly documented, such as what techniques were used?_
