@@ -200,7 +200,7 @@ For every of 10 different under-samplings, there are 10 random training and test
 
 #### Choosing best model
 
-Out of all models, SVMs have performed the best in terms of fbeta score, accuracy and recall. Precision was no the best of all models, but as written above, precision is not the main measure in this project.
+Out of all models, SVMs have performed the best in terms of F2-Score (fbeta) score, accuracy and recall. Precision was no the best of all models, but as written above, precision is not the main measure in this project. SVM F-2 Score was also significantly bigger in t-test than second biggest score, which came from ligstic regression.
 
 ![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/18 FBeta score box plot all.png)
 Fig. 18: FBeta score of all algorithms incl. benchmark
@@ -210,37 +210,54 @@ Fig. 19: FBeta score mean of all algorithms incl. benchmark
 
 ### Refinement
 
-In this section, you will need to discuss the process of improvement you made upon the algorithms and techniques you used in your implementation. For example, adjusting parameters for certain models to acquire improved solutions would fall under the refinement category. Your initial and final solutions should be reported, as well as any significant intermediate results as necessary. Questions to ask yourself when writing this section:
-- _Has an initial solution been found and clearly reported?_
-- _Is the process of improvement clearly documented, such as what techniques were used?_
-- _Are intermediate and final solutions clearly reported as the process is improved?_
+In support vector machines, two main hyperparameters can be tuned: C and kernel. Kernel means how the data is splitted in the space - if plane should be straight line, polynomial or RBF, which plotted on a 2 dimensional spaces look something like circle.
 
+![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/20 SVM kernel types.png)
+Fig. 20<sup>5</sup>: SVM kernel types
+
+C parameter tells SVM how much sensitive it should be for missclasifying points. The bigger C is, the more points should be classified correctly. Keeping that in mind, bigger C runs into risk of overfitting the data.
+
+![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/21 SVM C parameter.png)
+Fig. 21<sup>6</sup>: SVM C parameter
+
+Additionally, for kernel function, there is a gamma parameter, which indicates how much important the variance is. That means, for small gamma, two points can be further away to be considered as similar, but for large gamma, points have to be close to each other to be considered similar.
+
+I did hyperparameter tuning using GridSearchCV with 2 shuffle splits and 3 folds for each split. I used this example for my implementation ([link](http://scikit-learn.org/stable/auto_examples/svm/plot_svm_scale_c.html#sphx-glr-auto-examples-svm-plot-svm-scale-c-py)). Because recall is most important factor for me, which is also used for counting f2-score, I optimized GridSearchCV on recall. The result is, that the best hyperparameters are:
+
+![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/22 SVM Parameters.png)
+Fig. 22: Optimized SVM parameters
+
+Optimized model has 0.001 better F2-Score than not optimized - from 0.806 to 0.807.
 
 ## IV. Results
-_(approx. 2-3 pages)_
 
 ### Model Evaluation and Validation
-In this section, the final model and any supporting qualities should be evaluated in detail. It should be clear how the final model was derived and why this model was chosen. In addition, some type of analysis should be used to validate the robustness of this model and its solution, such as manipulating the input data or environment to see how the model’s solution is affected (this is called sensitivity analysis). Questions to ask yourself when writing this section:
-- _Is the final model reasonable and aligning with solution expectations? Are the final parameters of the model appropriate?_
-- _Has the final model been tested with various inputs to evaluate whether the model generalizes well to unseen data?_
-- _Is the model robust enough for the problem? Do small perturbations (changes) in training data or the input space greatly affect the results?_
-- _Can results found from the model be trusted?_
+Chosen model was support vector machines with hyperparameters described in refinement section. The goal of the model was to achieve higher F2-score than benchmark. SMVs performed best out of 5 tested models and additionaly their performance could be slightly improved through hyperparameter tuning. Because model training was run 100 times, final results will be evaluated based on mean and average performances.
+
+In order to achieve robustness, model was run 100 times with different splits and different under-samplings. This caused small fluctuation, with minimum F2-score of 0.79 and maximum 0.83. However, it was still the best out of all tested models.
 
 ### Justification
-In this section, your model’s final solution and its results should be compared to the benchmark you established earlier in the project using some type of statistical analysis. You should also justify whether these results and the solution are significant enough to have solved the problem posed in the project. Questions to ask yourself when writing this section:
-- _Are the final results found stronger than the benchmark result reported earlier?_
-- _Have you thoroughly analyzed and discussed the final solution?_
-- _Is the final solution significant enough to have solved the problem?_
+SVM achieved 0.807 F2-score which is 208% more than benchmark. It also achieved higher accuracy and precision, but smaller recall. Reason for achieving smaller recall is that in the benchmark we assumed that all people which are contacted will subscribe to a product, which causes that all positives are predicted correctly. In layman terms, it is more the reason that benchmark had very high recall than the SVMs are performing badly. Minimal F2-Score of SVMs before tuning was on the same level as best score from second classifier - logistic regression.
+
+![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/23 final results box plot.png)
+Fig. 23: Final results model vs. benchmark
+
+![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/24 final results mean.png)
+Fig. 24: Final results model (means) vs. benchmark
+
+SVM were significantly better than benchmark according also to two sample mean t-test. In figure below, sample one is F2-Score of SVMs and sample 2 is benchmark F2-Score.
+
+![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/25 scores t test.png)
+Fig. 24<sup>7</sup>: T-Test result for SVMs score vs. benchmark
 
 
 ## V. Conclusion
-_(approx. 1-2 pages)_
 
 ### Free-Form Visualization
-In this section, you will need to provide some form of visualization that emphasizes an important quality about the project. It is much more free-form, but should reasonably support a significant result or characteristic about the problem that you want to discuss. Questions to ask yourself when writing this section:
-- _Have you visualized a relevant or important quality about the problem, dataset, input data, or results?_
-- _Is the visualization thoroughly analyzed and discussed?_
-- _If a plot is provided, are the axes, title, and datum clearly defined?_
+This project would be used in marketing department in order to decide which potential customers to contact. Because sales people are contacting customers through telephone, it takes time and costs to contact every customer which will not subscribe to a deposit. Proposed algorithm has 0.82 recall, which means that if this algorithm would be used to choose which potential customers should be contacted, only 82% of customers who bought the product would buy it, because other 18% of them would not be contacted at all. It can mean, that it would decrease sales, but there is another side of it - because less potential people would be contacted, it could save a lot of money and time for the company.
+
+![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/26 final visualization.png)
+Fig. 26: T-Test result for SVMs score vs. benchmark
 
 ### Reflection
 In this section, you will summarize the entire end-to-end problem solution and discuss one or two particular aspects of the project you found interesting or difficult. You are expected to reflect on the project as a whole to show that you have a firm understanding of the entire process employed in your work. Questions to ask yourself when writing this section:
@@ -271,3 +288,6 @@ In this section, you will need to provide discussion as to how one aspect of the
 <sup>2</sup> Dirk Thorleuchter, Dirk Van den Poel, Anita Prinzie. _Analyzing existing customers' websites to improve the customer acquisition process as well as the profitability prediction in B-to-B marketing._ In _Expert Systems with Applications_ Volume 39(3). February 2012, pp. 2597-2605.
 <sup>3</sup> Bo Pang, Lillian Lee, Shivakumar Vaithyanathan. _Thumbs up? Sentiment Classification using Machine Learning Techniques_ In _Proceedings of EMNLP_. 2002, pp. 79–86.
 <sup>4</sup> https://en.wikipedia.org/wiki/Logistic_regression
+<sup>5</sup> http://scikit-learn.org/stable/auto_examples/exercises/plot_iris_exercise.html#sphx-glr-auto-examples-exercises-plot-iris-exercise-py
+<sup>6</sup> https://stats.stackexchange.com/questions/31066/what-is-the-influence-of-c-in-svms-with-linear-kernel
+<sup>7</sup> http://www.evanmiller.org/ab-testing/t-test.html
