@@ -1,7 +1,7 @@
 # Machine Learning Engineer Nanodegree
 ## Capstone Project
 Malgorzata Kot
-29.07.2018
+23.08.2018
 
 ## I. Definition
 
@@ -254,35 +254,32 @@ Fig. 24<sup>7</sup>: T-Test result for SVMs score vs. benchmark
 ## V. Conclusion
 
 ### Free-Form Visualization
-This project would be used in marketing department in order to decide which potential customers to contact. Because sales people are contacting customers through telephone, it takes time and costs to contact every customer which will not subscribe to a deposit. Proposed algorithm has 0.82 recall, which means that if this algorithm would be used to choose which potential customers should be contacted, only 82% of customers who bought the product would buy it, because other 18% of them would not be contacted at all. It can mean, that it would decrease sales, but there is another side of it - because less potential people would be contacted, it could save a lot of money and time for the company.
+This project would be used in marketing department in order to decide which potential customers to contact. Because sales people are contacting customers through telephone, it takes time and money to contact every customer which will not subscribe to a deposit. Proposed algorithm has 0.82 recall, which means that if this algorithm would be used to choose which potential customers should be contacted, only 82% of customers who bought the product would buy it, because other 18% of them would not be contacted at all. It can mean, that it would decrease sales, but there is another side of it. Algorithms' recall on potential client, who didn't buy the deposite is 0.88. That means that usage algorithm would reduce unsuccessfull contacts to 12%. Keeping in mind, that 89% of people in this dataset didn't subscribe to a deposit, 80% less people would have to be contacted, what would cause only 12% smaller order intake.
 
 ![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/26 final visualization.png)
 Fig. 26: T-Test result for SVMs score vs. benchmark
 
 ### Reflection
-In this section, you will summarize the entire end-to-end problem solution and discuss one or two particular aspects of the project you found interesting or difficult. You are expected to reflect on the project as a whole to show that you have a firm understanding of the entire process employed in your work. Questions to ask yourself when writing this section:
-- _Have you thoroughly summarized the entire process you used for this project?_
-- _Were there any interesting aspects of the project?_
-- _Were there any difficult aspects of the project?_
-- _Does the final model and solution fit your expectations for the problem, and should it be used in a general setting to solve these types of problems?_
+The process of creating this solution mapping marketing actions, when there is a need to optimize marketing actions or process.
+1. There was a dataset of marketing activities and their results (real data obtained from repository).
+2. Goal was defined to gel as high F2-Score as possible, but at least higher than benchmark.
+3. Data was investigated and described.
+4. Benchmark metrics were set.
+5. Data was preprocessed and accordingly manipulated.
+6. Optimal algorithm for this task was chosen.
+7. Classifier was tuned and trained on the data.
+8. Classifier was tested for robustness.
+
+Because data was imbalanced, the most difficult part was to preprocess the data so that result is highest achievable, but not biased and robust. It was achieved with under-sampling the dataset, which was possible only because dataset was large enough.
 
 ### Improvement
-In this section, you will need to provide discussion as to how one aspect of the implementation you designed could be improved. As an example, consider ways your implementation can be made more general, and what would need to be modified. You do not need to make this improvement, but the potential solutions resulting from these changes are considered and compared/contrasted to your current solution. Questions to ask yourself when writing this section:
-- _Are there further improvements that could be made on the algorithms or techniques you used in this project?_
-- _Were there algorithms or techniques you researched that you did not know how to implement, but would consider using if you knew how?_
-- _If you used your final solution as the new benchmark, do you think an even better solution exists?_
+As this is general implementation, it could be improved for any specific purpose. Some example improvements are:
+1. Using training and prediction time as one of choosing criteria for final algorithm, as it might be used for api where marketeers can enter data of new potential client and get real time answer if it is worth to contact him/her.
+2. Under-sampling could be suplemented with generating synthetic positive data, which would lead to usage of whole dataset and probably better predictions.
+3. Project could serve generally as advisory about which clients should be contacted, therefore an algorithm with feature importances could be used (as decision trees).
+4. Finally, supplementary to first point, it can be used in some kind of application wrapped around it so that it is real-life ready to use solution.
 
------------
-
-**Before submitting, ask yourself. . .**
-
-- Does the project report you’ve written follow a well-organized structure similar to that of the project template?
-- Is each section (particularly **Analysis** and **Methodology**) written in a clear, concise and specific fashion? Are there any ambiguous terms or phrases that need clarification?
-- Would the intended audience of your project be able to understand your analysis, methods, and results?
-- Have you properly proof-read your project report to assure there are minimal grammatical and spelling mistakes?
-- Are all the resources used for this project correctly cited and referenced?
-- Is the code that implements your solution easily readable and properly commented?
-- Does the code execute without error and produce results similar to those reported?
+___________________
 
 <sup>1</sup> Pål Sundsøy, Johannes Bjelland, Asif M Iqbal, Alex Sandy Pentland, Yves-Alexandre de Montjoye. _Big Data-Driven Marketing: How machine learning outperforms marketers’ gut-feeling._ In _Social Computing, Behavioral-Cultural Modeling & Prediction Lecture Notes_ in _Computer Science_ Volume 8393. 2014, pp. 367-374.
 <sup>2</sup> Dirk Thorleuchter, Dirk Van den Poel, Anita Prinzie. _Analyzing existing customers' websites to improve the customer acquisition process as well as the profitability prediction in B-to-B marketing._ In _Expert Systems with Applications_ Volume 39(3). February 2012, pp. 2597-2605.
