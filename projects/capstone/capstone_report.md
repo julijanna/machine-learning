@@ -99,7 +99,7 @@ In categorical variables, there are some which are balanced as contact or housin
 ![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/6 categorical variables.png)
 Fig. 6: Distributions of categorical variables
 
-Output variable is an imbalanced two label class with only 11% share of "no" and 89% "yes".
+Output variable is an imbalanced two label class with only 11% share of "yes" and 89% "no".
 
 ![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/7 output variable distribution.png)
 Fig. 7: Distribution of output variable
@@ -176,7 +176,6 @@ Fig. 15: Transformed campaign feature
 
 ### Implementation
 
-Before data was divided into training and test set, it had to be randomly under sampled in order to achieve higher performance.
 
 #### Data preprocessing
 
@@ -196,36 +195,61 @@ Random under-sampling was done 10 times every time with another split. This give
 
 #### Model fitting
 
-For every of 10 different under-samplings, there are 10 random training and test splits done. On every of these 100 different splits, each of 5 models is trained and measured. Model evaluation will be done for average and distribution of all 100 performances.
+Model fitting and predicting, but also splitting data into test and training parts was done in sklearn. Sklearn.SchuffleSplit is method, which is randomly splittind data into two datasets - one for training and one for testing. In this project 75% of data was used for training the algorithm and 25% for testing. That means, that when algorithm is trained, it "sees" only 75% of data (it is the same data for every algorithm). Every model has it's implementation in sklearn library:
+
+| Model  | Sklearn implementation  |
+|---|---|
+| Logistic Regression  | LogisticRegression  |
+|  Gaussian Naive Bayes | GaussianNB  |
+| Support Vector Machines  | svm  |
+|  Decision Tree |  DecisionTreeClassifier |
+| Random Forest  |  RandomForestClassifier |
+Fig. 18: Sklearn classification models implementations
+
+For every model, .fit() method is used to fit the classifier to training data and .predict() method to make prediction on test data after model has been trained. Fitting model means actually to train it. After successful training, the trained classifier is used to make prediction on the test set. These predictions are compared with real testing data and on this basis metrics are calculated. Metrics are also predefined in sklearn, from which F-Beta score, accuracy, precision and recall were used.
 
 #### Choosing best model
 
-Out of all models, SVMs have performed the best in terms of F2-Score (fbeta) score, accuracy and recall. Precision was no the best of all models, but as written above, precision is not the main measure in this project. SVM F-2 Score was also significantly bigger in t-test than second biggest score, which came from ligstic regression.
+Because running time of testing all possible parameters for every model is very time inefficient and cannot be done for many different splits, best model is chosen without doing any hyperparameter tuning. For every of 10 different under-samplings, there are 10 random training and test splits done. On every of these 100 different splits, each of 5 models is trained and measured. Model evaluation will be done for average and median of all 100 performances. Out of all models, SVMs have performed the best in terms of F2-Score (fbeta) score, accuracy and recall. Precision was not the best of all models, but as written above, precision is not the main measure in this project. 
 
-![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/18 FBeta score box plot all.png)
-Fig. 18: FBeta score of all algorithms incl. benchmark
+|  Model | mean F2-Score  | mean Accuracy  |  mean Recall | mean Precision  |
+|---|---|---|---|---|
+| Logistic Regression  | 0.756  | 0.867  | 0.748  |  0.786 |
+| Gaussian Naive Bayes  | 0.534  | 0.787  | 0.506  | 0.695  |
+|  Support Vector Machines | 0.806  | 0.875 | 0.814  | 0.775  |
+|  Decision Tree |  0.725 | 0.839  | 0.724  | 0.730  |
+| Random Forest  |  0.745 | 0.862  | 0.735  | 0.786  |
+Fig. 19: Mean metrics of all algorithms
 
-![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/19 FBeta score mean all.png)
-Fig. 19: FBeta score mean of all algorithms incl. benchmark
+According to student T-Test, SVM F-2 Score (sample 2) was significantly bigger in t-test than second biggest score, which came from logstic regression (sample 1).
+
+![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/20 Ttest logistic regression and svms.png)
+Fig. 20: Student's T-Test for logistic regression and SVMs
+
+On this basis, SVMs is chosen to do further parameter tuning.
 
 ### Refinement
 
 In support vector machines, two main hyperparameters can be tuned: C and kernel. Kernel means how the data is splitted in the space - if plane should be straight line, polynomial or RBF, which plotted on a 2 dimensional spaces look something like circle.
 
 ![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/20 SVM kernel types.png)
-Fig. 20<sup>5</sup>: SVM kernel types
+Fig. 21<sup>5</sup>: SVM kernel types
 
 C parameter tells SVM how much sensitive it should be for missclasifying points. The bigger C is, the more points should be classified correctly. Keeping that in mind, bigger C runs into risk of overfitting the data.
 
 ![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/21 SVM C parameter.png)
-Fig. 21<sup>6</sup>: SVM C parameter
+Fig. 22<sup>6</sup>: SVM C parameter
 
 Additionally, for kernel function, there is a gamma parameter, which indicates how much important the variance is. That means, for small gamma, two points can be further away to be considered as similar, but for large gamma, points have to be close to each other to be considered similar.
 
-I did hyperparameter tuning using GridSearchCV with 2 shuffle splits and 3 folds for each split. I used this example for my implementation ([link](http://scikit-learn.org/stable/auto_examples/svm/plot_svm_scale_c.html#sphx-glr-auto-examples-svm-plot-svm-scale-c-py)). Because recall is most important factor for me, which is also used for counting f2-score, I optimized GridSearchCV on recall. The result is, that the best hyperparameters are:
+I did hyperparameter tuning using GridSearchCV with 2 shuffle splits and 3 folds for each split. I used this example for my implementation ([link](http://scikit-learn.org/stable/auto_examples/svm/plot_svm_scale_c.html#sphx-glr-auto-examples-svm-plot-svm-scale-c-py)). Because recall is most important factor for me, which is also used for counting f2-score, I optimized GridSearchCV on recall.
+
+
+
+The result is, that the best hyperparameters are:
 
 ![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/22 SVM Parameters.png)
-Fig. 22: Optimized SVM parameters
+Fig. 23: Optimized SVM parameters
 
 Optimized model has 0.001 better F2-Score than not optimized - from 0.806 to 0.807.
 
@@ -240,15 +264,15 @@ In order to achieve robustness, model was run 100 times with different splits an
 SVM achieved 0.807 F2-score which is 208% more than benchmark. It also achieved higher accuracy and precision, but smaller recall. Reason for achieving smaller recall is that in the benchmark we assumed that all people which are contacted will subscribe to a product, which causes that all positives are predicted correctly. In layman terms, it is more the reason that benchmark had very high recall than the SVMs are performing badly. Minimal F2-Score of SVMs before tuning was on the same level as best score from second classifier - logistic regression.
 
 ![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/23 final results box plot.png)
-Fig. 23: Final results model vs. benchmark
+Fig. 24: Final results model vs. benchmark
 
 ![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/24 final results mean.png)
-Fig. 24: Final results model (means) vs. benchmark
+Fig. 25: Final results model (means) vs. benchmark
 
 SVM were significantly better than benchmark according also to two sample mean t-test. In figure below, sample one is F2-Score of SVMs and sample 2 is benchmark F2-Score.
 
 ![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/25 scores t test.png)
-Fig. 24<sup>7</sup>: T-Test result for SVMs score vs. benchmark
+Fig. 26<sup>7</sup>: T-Test result for SVMs score vs. benchmark
 
 
 ## V. Conclusion
@@ -257,7 +281,7 @@ Fig. 24<sup>7</sup>: T-Test result for SVMs score vs. benchmark
 This project would be used in marketing department in order to decide which potential customers to contact. Because sales people are contacting customers through telephone, it takes time and money to contact every customer which will not subscribe to a deposit. Proposed algorithm has 0.82 recall, which means that if this algorithm would be used to choose which potential customers should be contacted, only 82% of customers who bought the product would buy it, because other 18% of them would not be contacted at all. It can mean, that it would decrease sales, but there is another side of it. Algorithms' recall on potential client, who didn't buy the deposite is 0.88. That means that usage algorithm would reduce unsuccessfull contacts to 12%. Keeping in mind, that 89% of people in this dataset didn't subscribe to a deposit, 80% less people would have to be contacted, what would cause only 12% smaller order intake.
 
 ![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/26 final visualization.png)
-Fig. 26: T-Test result for SVMs score vs. benchmark
+Fig. 27: T-Test result for SVMs score vs. benchmark
 
 ### Reflection
 The process of creating this solution mapping marketing actions, when there is a need to optimize marketing actions or process.
