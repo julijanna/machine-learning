@@ -244,14 +244,28 @@ Additionally, for kernel function, there is a gamma parameter, which indicates h
 
 I did hyperparameter tuning using GridSearchCV with 2 shuffle splits and 3 folds for each split. I used this example for my implementation ([link](http://scikit-learn.org/stable/auto_examples/svm/plot_svm_scale_c.html#sphx-glr-auto-examples-svm-plot-svm-scale-c-py)). Because recall is most important factor for me, which is also used for counting f2-score, I optimized GridSearchCV on recall.
 
+Following hyperparameters and their combinations were tested (values in columns are combined with values in another columns, but values in rows not):
 
+| Kernel  | C  |  gamma |
+|---|---|---|
+| RBF  |  1, 10, 100, 1000 | 1, 0.1, 0.01, 0.001  |
+| linear  | 1, 10, 100  | -  |
+Fig. 23: Tested SVM hyperparameters
 
-The result is, that the best hyperparameters are:
+Best parameters are listed above and under "Grid scores on development set" are listed all parameters:
 
-![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/22 SVM Parameters.png)
-Fig. 23: Optimized SVM parameters
+![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/22 SVM Parameters output.png)
+Fig. 24: Optimized SVM parameters
 
-Optimized model has 0.001 better F2-Score than not optimized - from 0.806 to 0.807.
+When using best parameter configuration, following scores were achieved (for 100 training / testing runs):
+
+|   | mean F2-Score  | mean Accuracy  |  mean Recall | mean Precision  |
+|---|---|---|---|---|
+|  Before hyperparameter tuning | 0.806  | 0.875 | 0.814  | 0.775  |
+| After hyperparameter tuning  | 0.808  | 0.874  | 0.818  | 0.769  |
+Fig. 25: Optimized SVM parameters
+
+Optimized model has 0.002 better F2-Score than not optimized - from 0.806 to 0.808, so the optimizations will be used for further model evaluation.
 
 ## IV. Results
 
@@ -264,15 +278,15 @@ In order to achieve robustness, model was run 100 times with different splits an
 SVM achieved 0.807 F2-score which is 208% more than benchmark. It also achieved higher accuracy and precision, but smaller recall. Reason for achieving smaller recall is that in the benchmark we assumed that all people which are contacted will subscribe to a product, which causes that all positives are predicted correctly. In layman terms, it is more the reason that benchmark had very high recall than the SVMs are performing badly. Minimal F2-Score of SVMs before tuning was on the same level as best score from second classifier - logistic regression.
 
 ![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/23 final results box plot.png)
-Fig. 24: Final results model vs. benchmark
+Fig. 26: Final results model vs. benchmark
 
 ![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/24 final results mean.png)
-Fig. 25: Final results model (means) vs. benchmark
+Fig. 27: Final results model (means) vs. benchmark
 
 SVM were significantly better than benchmark according also to two sample mean t-test. In figure below, sample one is F2-Score of SVMs and sample 2 is benchmark F2-Score.
 
 ![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/25 scores t test.png)
-Fig. 26<sup>7</sup>: T-Test result for SVMs score vs. benchmark
+Fig. 28<sup>7</sup>: T-Test result for SVMs score vs. benchmark
 
 
 ## V. Conclusion
@@ -281,10 +295,10 @@ Fig. 26<sup>7</sup>: T-Test result for SVMs score vs. benchmark
 This project would be used in marketing department in order to decide which potential customers to contact. Because sales people are contacting customers through telephone, it takes time and money to contact every customer which will not subscribe to a deposit. Proposed algorithm has 0.82 recall, which means that if this algorithm would be used to choose which potential customers should be contacted, only 82% of customers who bought the product would buy it, because other 18% of them would not be contacted at all. It can mean, that it would decrease sales, but there is another side of it. Algorithms' recall on potential client, who didn't buy the deposite is 0.88. That means that usage algorithm would reduce unsuccessfull contacts to 12%. Keeping in mind, that 89% of people in this dataset didn't subscribe to a deposit, 80% less people would have to be contacted, what would cause only 12% smaller order intake.
 
 ![](/Users/mkot/Documents/Edu/Machine Learning Nanodegree/fork/machine-learning/projects/capstone/images/26 final visualization.png)
-Fig. 27: T-Test result for SVMs score vs. benchmark
+Fig. 29: T-Test result for SVMs score vs. benchmark
 
 ### Reflection
-The process of creating this solution mapping marketing actions, when there is a need to optimize marketing actions or process.
+The process of creating this solution was following marketing actions, when there is a need to optimize marketing performance.
 1. There was a dataset of marketing activities and their results (real data obtained from repository).
 2. Goal was defined to gel as high F2-Score as possible, but at least higher than benchmark.
 3. Data was investigated and described.
@@ -300,7 +314,7 @@ Because data was imbalanced, the most difficult part was to preprocess the data 
 As this is general implementation, it could be improved for any specific purpose. Some example improvements are:
 1. Using training and prediction time as one of choosing criteria for final algorithm, as it might be used for api where marketeers can enter data of new potential client and get real time answer if it is worth to contact him/her.
 2. Under-sampling could be suplemented with generating synthetic positive data, which would lead to usage of whole dataset and probably better predictions.
-3. Project could serve generally as advisory about which clients should be contacted, therefore an algorithm with feature importances could be used (as decision trees).
+3. Project could serve generally as advisory about which clients should be contacted, therefore PCA (principal component analysis) or an algorithm with feature importances could be used (as decision trees).
 4. Finally, supplementary to first point, it can be used in some kind of application wrapped around it so that it is real-life ready to use solution.
 
 ___________________
